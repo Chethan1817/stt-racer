@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>STT Fusion Agent</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <header class="top">
+      <div class="brand">
+        <h1>STT Fusion Agent</h1>
+        <p class="tagline">
+          Three speech engines race on every utterance. An LLM merges what they heard before
+          the agent replies.
+        </p>
+      </div>
+      <div class="controls">
+        <span id="you" class="chip you" hidden>● You</span>
+        <span id="status" class="pill" data-state="idle">
+          <span class="dot"></span><span id="status-text">Not connected</span>
+        </span>
+        <button id="toggle" class="primary" type="button">Start conversation</button>
+      </div>
+    </header>
+
+    <nav id="pipeline" class="pipeline" aria-label="Pipeline" hidden></nav>
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <main class="layout">
+      <section id="timeline" class="timeline" aria-live="polite">
+        <div id="empty" class="empty">
+          <p id="empty-title">Click <strong>Start conversation</strong>, allow the microphone, and talk.</p>
+          <p class="hint">Names, numbers and email addresses are where the engines disagree most.</p>
+        </div>
+      </section>
+
+      <aside class="side">
+        <section>
+          <h2>Scoreboard</h2>
+          <p class="hint">How often each engine already matched the fused transcript, and its average response time.</p>
+          <table class="scoreboard">
+            <thead>
+              <tr><th>Engine</th><th>Matched</th><th>Latency</th></tr>
+            </thead>
+            <tbody id="scoreboard">
+              <tr class="placeholder"><td colspan="3">No turns yet</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
+          <h2>Reading a turn</h2>
+          <ul class="legend">
+            <li><mark class="diff">word</mark> differs from the fused transcript</li>
+            <li><span class="tag changed">corrected</span> fusion changed the consensus pick</li>
+            <li><span class="tag agreed">all agreed</span> engines matched word for word, LLM skipped</li>
+            <li><span class="tag fallback">fallback</span> fusion failed, consensus used</li>
+            <li><span class="tag noise">noise</span> judged not to be speech, no reply</li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+
+    <div id="audio" hidden></div>
+  </body>
+</html>
